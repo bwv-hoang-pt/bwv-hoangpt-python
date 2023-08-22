@@ -1,11 +1,10 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import login_user
 from sqlalchemy import or_
-from app import forms, db
 from app.models import User
+from app import forms, db
 
 auth = Blueprint('auth', __name__)
-
+    
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm()
@@ -14,7 +13,6 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
-        login_user(user)
         return redirect(url_for('home.index'))
     return render_template('auth/login.html', form=form)
 
